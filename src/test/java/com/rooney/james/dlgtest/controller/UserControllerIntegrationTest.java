@@ -28,4 +28,10 @@ public class UserControllerIntegrationTest {
                 .andExpect(jsonPath("$.lastName").value("l_name2"))
                 .andExpect(jsonPath("$.email").value("james2@test.com"));
     }
+
+    @Test
+    void getUserThatDoesNotExist() throws Exception {
+        mockMvc.perform(get("/users").param("email", "james33@test.com"))
+                .andExpect(status().isNotFound());
+    }
 }
