@@ -2,6 +2,9 @@ package com.rooney.james.dlgtest.controller;
 
 import com.rooney.james.dlgtest.controller.api.UserController;
 import com.rooney.james.dlgtest.domain.UserDTO;
+import com.rooney.james.dlgtest.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,20 +12,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("users")
 public class UserControllerImpl implements UserController {
 
-    @Override
-    @GetMapping
-    public UserDTO getUser(String userEmail) {
-        UserDTO dummyUser = UserDTO.builder()
-                .firstName("james")
-                .lastName("rooney")
-                .email("james@test.com")
-                .phoneNumber("12345")
-                .department("IT")
-                .jobTitle("Developer")
-                .password("password")
-                .build();
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserControllerImpl.class);
 
-        return dummyUser;
+    private UserService userService;
+
+    public UserControllerImpl(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping
+    public UserDTO getUser(@RequestParam String email) {
+        LOGGER.info("Getting a user with id: {}", email);
+
+        UserDTO user = userService.getUser(email);
+
+        return user;
     }
 
     @Override
