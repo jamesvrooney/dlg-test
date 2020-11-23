@@ -5,8 +5,11 @@ import com.rooney.james.dlgtest.domain.UserDTO;
 import com.rooney.james.dlgtest.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("users")
@@ -29,21 +32,30 @@ public class UserControllerImpl implements UserController {
         return user;
     }
 
-    @Override
-    @PostMapping
-    public ResponseEntity<Void> createUser(UserDTO user) {
-        return null;
+    @PostMapping()
+    public ResponseEntity<Void> createUser(@RequestBody @Valid UserDTO user) {
+        LOGGER.info("Creating a new user");
+
+        userService.createUser(user);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @Override
     @DeleteMapping
-    public void deleteUser(String userEmail) {
+    public void deleteUser(@RequestParam String email) {
+        LOGGER.info("Preparing to delete user with email: {}", email);
 
+        userService.deleteUser(email);
+
+        LOGGER.info("User deleted");
     }
 
-    @Override
     @PutMapping
-    public ResponseEntity<Void> updateUser(UserDTO user) {
-        return null;
+    public ResponseEntity<Void> updateUser(@RequestBody @Valid UserDTO user) {
+        LOGGER.info("Updating an existing user: {}", user.getEmail());
+
+        userService.updateUser(user);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

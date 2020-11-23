@@ -4,10 +4,13 @@ import com.rooney.james.dlgtest.controller.mapper.UserMapper;
 import com.rooney.james.dlgtest.domain.User;
 import com.rooney.james.dlgtest.domain.UserDTO;
 import com.rooney.james.dlgtest.exception.UserNotFoundException;
+import com.rooney.james.dlgtest.exception.UserWithMatchingEmailException;
 import com.rooney.james.dlgtest.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -22,7 +25,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(UserDTO newUser) {
+        User existingUser = userRepository.findByEmail(newUser.getEmail());
 
+        if (existingUser != null) {
+            throw new UserWithMatchingEmailException(existingUser.getEmail());
+        }
+
+        User user = userMapper.userDtoToUser(newUser);
+
+        user.setCreatedDate(new Date());
+
+        User savedUser = userRepository.save(user);
+
+        LOGGER.info("Saved new user with userId: {}", savedUser.getId());
     }
 
     @Override
@@ -39,12 +54,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(UserDTO updatedUser) throws UserNotFoundException {
+    public void updateUser(UserDTO updatedUserDto) throws UserNotFoundException {
+        User existingUser = userRepository.findByEmail(updatedUserDto.getEmail());
 
+        if (existingUser == null) {
+            throw new UserNotFoundException(updatedUserDto.getEmail());
+        }
+
+        User updatedUser = userMapper.userDtoToUser(updatedUserDto);
+
+        existingUser.setFirstName(updatedUser.getFirstName());
+        existingUser.setLastName(updatedUser.getLastName());
+        existingUser.setEmail(updatedUser.getEmail());
+        existingUser.setPassword(updatedUser.getPassword());
+        existingUser.setDepartment(updatedUser.getDepartment());
+        existingUser.setJobTitle(updatedUser.getJobTitle());
+        existingUser.setLastModifiedDate(new Date());
+
+        userRepository.save(existingUser);
     }
 
     @Override
     public void deleteUser(String email) {
-
+        userRepository.deleteUserByEmail(email);
     }
 }
