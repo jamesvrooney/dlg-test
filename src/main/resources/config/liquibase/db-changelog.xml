@@ -24,8 +24,8 @@
         </createTable>
     </changeSet>
 
-<!--    <changeSet id="user_insert_data" author="jamesvrooney">-->
-<!--        <sqlFile path="config/liquibase/user/insert_users.sql"/>-->
-<!--    </changeSet>-->
+    <changeSet id="user_insert_data" author="jamesvrooney">
+        <sqlFile path="config/liquibase/user/insert_users.sql"/>
+    </changeSet>
 
 </databaseChangeLog>

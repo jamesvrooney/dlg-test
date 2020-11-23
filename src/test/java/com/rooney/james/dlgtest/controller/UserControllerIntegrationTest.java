@@ -22,10 +22,10 @@ public class UserControllerIntegrationTest {
 
     @Test
     void getUserByEmail() throws Exception {
-        mockMvc.perform(get("/users").param("email", "james@test.com"))
+        mockMvc.perform(get("/users").param("email", "james2@test.com"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.firstName").value("james"))
-                .andExpect(jsonPath("$.lastName").value("rooney"))
-                .andExpect(jsonPath("$.email").value("james@test.com"));
+                .andExpect(jsonPath("$.firstName").value("f_name2"))
+                .andExpect(jsonPath("$.lastName").value("l_name2"))
+                .andExpect(jsonPath("$.email").value("james2@test.com"));
     }
 }
