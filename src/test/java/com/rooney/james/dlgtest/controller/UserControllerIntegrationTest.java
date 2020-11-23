@@ -1,6 +1,5 @@
 package com.rooney.james.dlgtest.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rooney.james.dlgtest.DlgTestApplication;
 import com.rooney.james.dlgtest.domain.UserDTO;
 import org.junit.jupiter.api.Test;
@@ -11,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static com.rooney.james.dlgtest.util.JsonMapper.asJsonString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -23,14 +23,6 @@ public class UserControllerIntegrationTest {
     @Autowired
     MockMvc mockMvc;
 
-    private static String asJsonString(final Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @Test
     void getUserThatDoesNotExist() throws Exception {
         mockMvc.perform(get("/users").param("email", "james33@test.com"))
@@ -39,7 +31,7 @@ public class UserControllerIntegrationTest {
 
     @Test
     void getUserByEmail() throws Exception {
-        mockMvc.perform(get("/users").param("email", "james2@test.com")) //.accept(MediaType.APPLICATION_JSON_VALUE))
+        mockMvc.perform(get("/users").param("email", "james2@test.com"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName").value("f_name2"))
                 .andExpect(jsonPath("$.lastName").value("l_name2"))
