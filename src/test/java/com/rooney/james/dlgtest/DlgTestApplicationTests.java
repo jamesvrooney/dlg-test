@@ -1,4 +1,4 @@
-package com.rooney.james.dlgtest.dlgtest;
+package com.rooney.james.dlgtest;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

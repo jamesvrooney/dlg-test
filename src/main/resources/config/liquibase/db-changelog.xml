@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+
+    <changeSet id="create_users_table" author="jamesvrooney">
+        <createTable tableName="dlg_user">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="first_name" type="varchar(100)"/>
+            <column name="last_name" type="varchar(100)"/>
+            <column name="email" type="varchar(100)">
+                <constraints unique="true"/>
+            </column>
+            <column name="password" type="varchar(100)"/>
+            <column name="phone_number" type="varchar(100)"/>
+            <column name="department" type="varchar(100)"/>
+            <column name="job_title" type="varchar(100)"/>
+            <column name="created_date" type="timestamp"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+<!--    <changeSet id="user_insert_data" author="jamesvrooney">-->
+<!--        <sqlFile path="config/liquibase/user/insert_users.sql"/>-->
+<!--    </changeSet>-->
+
+</databaseChangeLog>
