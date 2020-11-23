@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  dlg-user-rest-api:
+    image: dlg-image-james
+    build: .
+    ports:
+      - 8080:8080
