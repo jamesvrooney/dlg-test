@@ -6,22 +6,18 @@ import com.rooney.james.dlgtest.domain.UserDTO;
 import com.rooney.james.dlgtest.exception.UserNotFoundException;
 import com.rooney.james.dlgtest.exception.UserWithMatchingEmailException;
 import com.rooney.james.dlgtest.repository.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+@Slf4j
+@RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
-    private UserRepository userRepository;
-    private UserMapper userMapper;
-
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-    }
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Override
     public void createUser(UserDTO newUser) {
@@ -37,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
         User savedUser = userRepository.save(user);
 
-        LOGGER.info("Saved new user with userId: {}", savedUser.getId());
+        log.info("Saved new user with userId: {}", savedUser.getId());
     }
 
     @Override
